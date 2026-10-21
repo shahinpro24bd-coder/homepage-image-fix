@@ -33,7 +33,7 @@ export const ensureAdminAccount = createServerFn({ method: "POST" }).handler(asy
   if ((count ?? 0) > 0) return { created: false };
   const { data, error } = await supabaseAdmin.auth.admin.createUser({
     email: "admin@qmep.local",
-    password: "Qmep#Admin2026",
+    password: "admin123",
     email_confirm: true,
   });
   let userId = data.user?.id;

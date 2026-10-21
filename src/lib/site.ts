@@ -9,9 +9,9 @@ import vrf from "@/assets/service-vrf.webp";
 export const company = {
   name: "QMEP Electromechanical LLC",
   short: "QMEP",
-  phone: "+971 4 000 0000",
-  phoneHref: "tel:+97140000000",
-  whatsappHref: "https://wa.me/971500000000",
+  phone: "+971 56 547 7186",
+  phoneHref: "tel:+971565477186",
+  whatsappHref: "https://wa.me/971565477186",
   email: "info@qmep.ae",
   address: "Dubai, United Arab Emirates",
   hours: "Mon – Sat, 8:00 AM – 6:00 PM",

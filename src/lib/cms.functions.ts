@@ -3,10 +3,16 @@ import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import type { SiteContent } from "@/lib/cms";
 
+// Public fallback credentials so the site works on hosts (e.g. Vercel) with no
+// environment variables configured. The publishable key is public by design.
+const FALLBACK_SUPABASE_URL = "https://bvmlqwnncwiwzweedmdg.supabase.co";
+const FALLBACK_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_68Zljiov2o_S8wcgxPunWA_qNbuXlYG";
+
 export const getSiteContent = createServerFn({ method: "GET" }).handler(async (): Promise<SiteContent> => {
   try {
-    const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-    const sb = createClient<Database>(process.env["SUPABASE_URL"]!, key, {
+    const key = process.env["SUPABASE_PUBLISHABLE_KEY"] || FALLBACK_SUPABASE_PUBLISHABLE_KEY;
+    const url = process.env["SUPABASE_URL"] || FALLBACK_SUPABASE_URL;
+    const sb = createClient<Database>(url, key, {
       auth: { persistSession: false, autoRefreshToken: false },
       global: {
         fetch: (input, init) => {
@@ -28,7 +34,8 @@ export const getSiteContent = createServerFn({ method: "GET" }).handler(async ()
 
 // Creates the default admin account once, only while no admin exists yet.
 export const ensureAdminAccount = createServerFn({ method: "POST" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { count } = await supabaseAdmin.from("user_roles").select("id", { count: "exact", head: true }).eq("role", "admin");
   if ((count ?? 0) > 0) return { created: false };
   const { data, error } = await supabaseAdmin.auth.admin.createUser({
@@ -44,4 +51,9 @@ export const ensureAdminAccount = createServerFn({ method: "POST" }).handler(asy
   if (!userId) return { created: false };
   await supabaseAdmin.from("user_roles").insert({ user_id: userId, role: "admin" });
   return { created: true };
+  } catch {
+    // Service key unavailable (e.g. static hosting without env vars) — the
+    // admin account already exists, so there is nothing to create.
+    return { created: false };
+  }
 });

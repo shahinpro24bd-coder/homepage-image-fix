@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 - Editable site content lives in the site_content table and is merged into the shared data in src/lib/site.ts by applyContent() in the root route; bundled values stay as fallback so the site works with an empty database.
+- Browser icons use the site's existing cog identity, with SVG, PNG, and ICO fallbacks kept aligned to prevent template branding in browser tabs and bookmarks.
 - Uploaded images are stored privately and served through /api/public/img/* with long caching.
 - Page editing: wrap page text in `<T k d>` and images in `<Img k d>` from src/lib/editable.tsx; the admin editor (/admin/pages/<page>) renders the same page component inside EditContext so fields become textboxes. Keys `services.N.*`/`faqs.N.*` map to the shared lists; other keys live in the `texts` row of site_content.
 - Full-width section bands use the `.band` class (no max-width, no inline padding) with the content inside a `.container`, so a section's background reaches both viewport edges while its text stays aligned; `.container` carries a 1.5rem inline gutter because Bootstrap's wide `g-5` gutters pull a `.row` 24px past the default 12px container padding, which otherwise causes sideways scrolling on phones.

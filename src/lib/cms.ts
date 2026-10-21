@@ -25,5 +25,5 @@ export function applyContent(c: SiteContent | null | undefined) {
   setPageTexts(c?.texts);
 }
 
-export const ADMIN_EMAIL = "admin@qmep.local";
-export const usernameToEmail = (u: string) => (u.includes("@") ? u.trim() : `${u.trim().toLowerCase()}@qmep.local`);
+export const ADMIN_EMAIL = "admin@qmep-app.com";
+export const usernameToEmail = (u: string) => (u.includes("@") ? u.trim() : `${u.trim().toLowerCase()}@qmep-app.com`);

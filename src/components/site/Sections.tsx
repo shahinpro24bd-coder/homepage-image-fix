@@ -229,7 +229,7 @@ export function QuoteForm() {
     const f = new FormData(e.currentTarget);
     const v = (k: string) => String(f.get(k) ?? "").trim();
     setBusy(true); setErr("");
-    const { supabase } = await import("@/integrations/supabase/client");
+    const { supabase } = await import("@/lib/supabase");
     const { error } = await supabase.from("quote_requests").insert({
       name: v("name"), company: v("company") || null, phone: v("phone"), email: v("email") || null,
       location: v("location"), service: v("service"), property_type: v("property_type") || null, details: v("details"),

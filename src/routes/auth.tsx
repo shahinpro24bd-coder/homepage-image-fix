@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { ensureAdminAccount } from "@/lib/cms.functions";
 import { usernameToEmail } from "@/lib/cms";
 

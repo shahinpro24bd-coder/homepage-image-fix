@@ -32,14 +32,14 @@ export const ensureAdminAccount = createServerFn({ method: "POST" }).handler(asy
   const { count } = await supabaseAdmin.from("user_roles").select("id", { count: "exact", head: true }).eq("role", "admin");
   if ((count ?? 0) > 0) return { created: false };
   const { data, error } = await supabaseAdmin.auth.admin.createUser({
-    email: "admin@qmep.local",
-    password: "Qmep#Admin2026",
+    email: "admin@qmep-app.com",
+    password: "admin123",
     email_confirm: true,
   });
   let userId = data.user?.id;
   if (error || !userId) {
     const list = await supabaseAdmin.auth.admin.listUsers();
-    userId = list.data.users.find((u) => u.email === "admin@qmep.local")?.id;
+    userId = list.data.users.find((u) => u.email === "admin@qmep-app.com")?.id;
   }
   if (!userId) return { created: false };
   await supabaseAdmin.from("user_roles").insert({ user_id: userId, role: "admin" });

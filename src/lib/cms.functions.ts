@@ -51,4 +51,9 @@ export const ensureAdminAccount = createServerFn({ method: "POST" }).handler(asy
   if (!userId) return { created: false };
   await supabaseAdmin.from("user_roles").insert({ user_id: userId, role: "admin" });
   return { created: true };
+  } catch {
+    // Service key unavailable (e.g. static hosting without env vars) — the
+    // admin account already exists, so there is nothing to create.
+    return { created: false };
+  }
 });
